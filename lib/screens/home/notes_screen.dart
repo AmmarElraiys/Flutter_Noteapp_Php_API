@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app_php/constant/links.dart';
-import 'package:notes_app_php/utils/auth/username_validator.dart';
-import 'package:notes_app_php/widgets/data/crud.dart';
 
 class NotesScreen extends StatefulWidget {
   final notes;
@@ -13,11 +10,11 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  Crud _crud = Crud();
   bool isLoading = false;
   final GlobalKey<FormState> formstate = GlobalKey<FormState>();
   final TextEditingController NoteTitle = TextEditingController();
   final TextEditingController NoteContent = TextEditingController();
+  final ScrollController _contentScrollController = ScrollController();
 
   @override
   void initState() {
@@ -26,22 +23,12 @@ class _NotesScreenState extends State<NotesScreen> {
     NoteContent.text = widget.notes['notes_content'] ?? '';
   }
 
-  getNotes() async {
-    if (formstate.currentState!.validate()) {
-      isLoading = true;
-      setState(() {});
-
-      var response = await _crud.postRequest(linkNotesView, {
-        "title": NoteTitle.text,
-        "content": NoteContent.text,
-        "id": widget.notes['notes_id'].toString(),
-      });
-
-      isLoading = false;
-      setState(() {});
-
-      if (response['status'] == "success") {}
-    }
+  @override
+  void dispose() {
+    NoteTitle.dispose();
+    NoteContent.dispose();
+    _contentScrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,7 +63,7 @@ class _NotesScreenState extends State<NotesScreen> {
                         TextFormField(
                           controller: NoteTitle,
                           enabled: false,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                             fontSize: 20,
@@ -98,20 +85,35 @@ class _NotesScreenState extends State<NotesScreen> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        TextFormField(
-                          controller: NoteContent,
-                          maxLines: 20,
-                          enabled: false,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 20,
+                        Container(
+                          height:
+                              300, // İçeriği kaydırmak için bir sabit yükseklik veriyoruz
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey),
                           ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[100],
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                          child: Scrollbar(
+                            thumbVisibility: true,
+                            controller: _contentScrollController,
+                            child: SingleChildScrollView(
+                              controller: _contentScrollController,
+                              child: TextFormField(
+                                controller: NoteContent,
+                                enabled: false,
+                                maxLines:
+                                    null, // Satır sayısını sınırsız yapıyoruz
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                ),
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  isCollapsed: true, // İç boşlukları azaltır
+                                ),
+                              ),
                             ),
                           ),
                         ),
