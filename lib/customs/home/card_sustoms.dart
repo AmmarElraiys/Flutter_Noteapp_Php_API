@@ -29,7 +29,7 @@ class CardCustom extends StatelessWidget {
               "$linkServerNameImage/${noteModel.notesImage ?? ''}",
               width: 100,
               height: 100,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               errorBuilder: (context, error, stackTrace) {
                 return const Icon(
                   Icons.broken_image,

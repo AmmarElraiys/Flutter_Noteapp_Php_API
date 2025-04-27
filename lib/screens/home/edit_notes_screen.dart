@@ -59,7 +59,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add New Note")),
+      appBar: AppBar(title: const Text("Edit Note")),
       body: Form(
         key: formstate,
         child: Container(
