@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app_php/model/notemodel.dart';
 
 class CardCustom extends StatelessWidget {
-  final String titleNote;
-  final String contentNote;
+  final NoteModel noteModel;
   final String image;
   final void Function()? onTap;
   final void Function()? onPressedDelete;
@@ -10,8 +10,7 @@ class CardCustom extends StatelessWidget {
 
   const CardCustom({
     Key? key,
-    required this.titleNote,
-    required this.contentNote,
+    required this.noteModel,
     required this.image,
     this.onTap,
     this.onPressedDelete,
@@ -39,13 +38,13 @@ class CardCustom extends StatelessWidget {
               flex: 3,
               child: ListTile(
                 title: Text(
-                  titleNote,
+                  "${noteModel.notesTitle}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                   maxLines: 1, // en fazla 2 satır
                   overflow: TextOverflow.ellipsis, // taşarsa ... koy
                 ),
                 subtitle: Text(
-                  contentNote,
+                  "${noteModel.notesContent}",
                   maxLines: 1, // en fazla 2 satır
                   overflow: TextOverflow.ellipsis, // taşarsa ... koy
                 ),

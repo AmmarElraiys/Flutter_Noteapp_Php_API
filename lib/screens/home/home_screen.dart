@@ -3,6 +3,7 @@ import 'package:notes_app_php/constant/links.dart';
 import 'package:notes_app_php/customs/home/card_sustoms.dart';
 import 'package:notes_app_php/customs/home/floatingactionbutton_widget.dart';
 import 'package:notes_app_php/main.dart';
+import 'package:notes_app_php/model/notemodel.dart';
 import 'package:notes_app_php/screens/home/edit_notes_screen.dart';
 import 'package:notes_app_php/screens/home/notes_screen.dart';
 import 'package:notes_app_php/utils/home/drawer_home.dart';
@@ -22,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
     var response = await _crud.postRequest(linkNotesView, {
       "id": sharedPreferences!.getString("id"),
     });
-    print("---------------------------------------------------  $response");
 
     return response;
   }
@@ -80,10 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         },
-                        contentNote:
-                            "${snapshot.data['data'][index]['notes_content']}",
-                        titleNote:
-                            "${snapshot.data['data'][index]['notes_title']}",
+                        noteModel: NoteModel.fromJson(
+                          snapshot.data['data'][index],
+                        ),
+
                         image: "assets/images/folder.png",
                         onPressedDelete: () async {
                           var response = await _crud.postRequest(
