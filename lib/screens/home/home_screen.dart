@@ -84,12 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           snapshot.data['data'][index],
                         ),
 
-                        image: "assets/images/folder.png",
                         onPressedDelete: () async {
-                          var response = await _crud.postRequest(
-                            linkNotesDelete,
-                            {"id": snapshot.data['data'][index]['notes_id']},
-                          );
+                          var response = await _crud
+                              .postRequest(linkNotesDelete, {
+                                "id": snapshot.data['data'][index]['notes_id'],
+                                "imagename":
+                                    snapshot.data['data'][index]['notes_image'],
+                              });
                           if (response["status"] == "success") {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                               "/home",

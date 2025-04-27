@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app_php/constant/links.dart';
 import 'package:notes_app_php/model/notemodel.dart';
 
 class CardCustom extends StatelessWidget {
   final NoteModel noteModel;
-  final String image;
+
   final void Function()? onTap;
   final void Function()? onPressedDelete;
   final void Function()? onPressedEdit;
@@ -11,7 +12,7 @@ class CardCustom extends StatelessWidget {
   const CardCustom({
     Key? key,
     required this.noteModel,
-    required this.image,
+
     this.onTap,
     this.onPressedDelete,
     this.onPressedEdit,
@@ -24,15 +25,20 @@ class CardCustom extends StatelessWidget {
       child: Card(
         child: Row(
           children: [
-            Expanded(
-              flex: 1,
-              child: Image.asset(
-                image,
-                width: 30,
-                height: 100,
-                fit: BoxFit.fill,
-              ),
+            Image.network(
+              "$linkServerNameImage/${noteModel.notesImage ?? ''}",
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(
+                  Icons.broken_image,
+                  size: 50,
+                  color: Colors.grey,
+                );
+              },
             ),
+
             const SizedBox(width: 10),
             Expanded(
               flex: 3,
